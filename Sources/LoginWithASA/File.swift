@@ -23,7 +23,11 @@ import UIKit
 
 
 public struct Config {
-    let subscriptionKey: String
+    public let subscriptionKey: String
+    
+    public init(subscriptionKey: String) {
+        self.subscriptionKey = subscriptionKey
+    }
 }
 
 
