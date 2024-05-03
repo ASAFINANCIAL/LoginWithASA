@@ -32,7 +32,7 @@ public class LoginWithASA {
     
     private let config: Config
     
-    init(config: Config) {
+    public init(config: Config) {
         self.config = config
     }
     
