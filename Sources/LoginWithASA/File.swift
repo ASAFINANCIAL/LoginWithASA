@@ -43,17 +43,8 @@ public class LoginWithASA {
     
     public func start() {
         let vc = UIViewController(nibName: nil, bundle: nil)
-        
-        if #available(iOS 13.0, *) {
-            for scene in UIApplication.shared.connectedScenes {
-                if scene.activationState == .foregroundActive {
-                    let rootVC = ((scene as? UIWindowScene)!.delegate as! UIWindowSceneDelegate).window!!.rootViewController
-                    rootVC?.present(vc, animated: true)
-                    break
-                }
-            }
-        } else {
-            // Fallback on earlier versions
+        if let rootVC = UIApplication.shared.windows.filter{ $0.isKeyWindow }.first?.rootViewController {
+            rootVC.present(vc, animated: true)
         }
     }
     
