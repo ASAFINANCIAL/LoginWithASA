@@ -5,9 +5,8 @@ import Foundation
 import UIKit
 
 public protocol LoginWithASAUIDelegate {
-    
     func present(loginWithASAVC: UIViewController)
-    
+    func finshed(loginWithASAVC: UIViewController)
 }
 
 public struct LoginWithASAResponse {
@@ -60,11 +59,7 @@ public class LoginWithASA {
         let vc = LoginWithASAVC(nibName: nil, bundle: nil)
         vc.loader.startAnimating()
         vc.vcFinished = { self.nav = nil }
-        
-
-
-        
-        vc.navigationUrlHandler = { urlRequest in
+        vc.navigationUrlHandler = { [weak vc] urlRequest in
             guard let url = urlRequest.url else { return }
             
             let components = URLComponents(string: url.absoluteString)
@@ -78,11 +73,22 @@ public class LoginWithASA {
                 
                 let networth = components?.queryItems?.first(where: { $0.name.lowercased() == "networth" })?.value ?? "0"
                 let networthDouble = Double(networth) ?? 0
-                
                 successHandler(.init(asaConsumerCode: consumerCode, token: token, expirydatefortoken: date, networth: networthDouble, email: email, asaFintechCode: asaFintechCode))
+                
+                if let uiDelegate, let vc {
+                    uiDelegate.finshed(loginWithASAVC: vc)
+                } else {
+                    self.nav?.dismiss(animated: true)
+                }
             }
             if url.absoluteString.contains(self.config.redirectFailureUrl) {
                 self.showApiError(error: .init(statusCode: 0, message: url.absoluteString))
+                
+                if let uiDelegate, let vc {
+                    uiDelegate.finshed(loginWithASAVC: vc)
+                } else {
+                    self.nav?.dismiss(animated: true)
+                }
             }
         }
         
