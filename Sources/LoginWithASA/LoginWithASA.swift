@@ -35,8 +35,8 @@ public struct Config {
     public let asaFintechCode: String
     public let apiVersion: String
     
-    let redirectUrl: String = "https://loginWithAsa/asalogin"
-    let redirectFailureUrl: String = "https://loginWithAsa/asaloginfailed"
+    let redirectUrl: String = "https://loginwithasa/asalogin"
+    let redirectFailureUrl: String = "https://loginwithasa/asaloginfailed"
     
     public init(subscriptionKey: String, applicationCode: String, authorizationKey: String, asaFintechCode: String, apiVersion: String) {
         self.subscriptionKey = subscriptionKey
@@ -69,7 +69,7 @@ public class LoginWithASA {
             
             let components = URLComponents(string: url.absoluteString)
             
-            if url.absoluteString.hasPrefix(self.config.redirectUrl),
+            if url.absoluteString.contains(self.config.redirectUrl),
                let consumerCode = components?.queryItems?.first(where: { $0.name.lowercased() == "asaconsumercode" })?.value,
                let token = components?.queryItems?.first(where: { $0.name.lowercased() == "bearertoken" })?.value,
                let date = components?.queryItems?.first(where: { $0.name.lowercased() == "expirydatefortoken" })?.value,
@@ -81,7 +81,7 @@ public class LoginWithASA {
                 
                 successHandler(.init(asaConsumerCode: consumerCode, token: token, expirydatefortoken: date, networth: networthDouble, email: email, asaFintechCode: asaFintechCode))
             }
-            if url.absoluteString.hasPrefix(self.config.redirectFailureUrl) {
+            if url.absoluteString.contains(self.config.redirectFailureUrl) {
                 self.showApiError(error: .init(statusCode: 0, message: url.absoluteString))
             }
         }
