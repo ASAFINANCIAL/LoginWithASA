@@ -77,7 +77,7 @@ final class LoginWithASAVC: UIViewController, WKNavigationDelegate {
 final class APIService {
     
     func authorise(with params: [String: Any], subscriptionKey: String, apiVersion: String, completionHanlder: @escaping ((URL?, ErrorReponse?) -> Void)) {
-        let url = URL(string: "https://openapiqa.asacore.com/Authentication/Authorization")!
+        let url = URL(string: "https://openapi.asacore.com/Authentication/Authorization")!
         var request = URLRequest(url: url)
         request.setValue(subscriptionKey, forHTTPHeaderField: "Ocp-Apim-Subscription-Key")
         request.setValue(apiVersion, forHTTPHeaderField: "X-ASA-APIVersion")
